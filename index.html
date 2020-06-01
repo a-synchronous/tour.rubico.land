@@ -108,10 +108,10 @@ const runCode = codemirror => pipe([
   },
 ])
 
-const testMirror = makeCodeMirror('codemirror-test', `
-// const add = (a: int, b: int): int => a + b
-const add = (a, b) => a + b
-`)
+const testMirror = makeCodeMirror('codemirror-test', [
+  // const add = (a: int, b: int): int => a + b
+  'const add = (a, b) => a + b',
+].join('\n'))
 
 document.getElementById('codemirror-test-button').onclick = runCode(testMirror)
 
