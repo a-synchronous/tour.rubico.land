@@ -28,10 +28,12 @@
   <script src="mode/javascript/javascript.js"></script>
 </head>
 <body>
-<div id="react-root"></div>
-<div id="codemirror-test"></div>
-<button id="codemirror-test-button">run</button>
-<div id="codemirror-test-output"></div>
+  <div id="test">
+    <div id="test-codemirror"></div>
+    <button id="test-run-button">run</button>
+  </div>
+</body>
+
 <script>
 
 const { pipe, tap, get } = rubico
@@ -53,16 +55,20 @@ const makeCodeMirror = (id, code) => {
 // code => html_string_with_code
 const generateHTMLScript = code => {
   const script = document.createElement('script')
-  script.innerHTML = `
-const panel = document.createElement('h1')
-document.body.appendChild(panel)
-const console = {
-  log: message => {
-    panel.innerHTML = message
-  },
-}
-${code}
-`
+  script.innerHTML = [
+    `fetch('https://unpkg.com/rubico@1/index.js')`,
+    `.then(res => res.text())`,
+    `.then(text => {`,
+    `Function(text)()`,
+    `const { pipe, fork, assign, tap, tryCatch, switchCase,
+      map, filter, reduce, transform, any, all, and, or, not,
+      eq, gt, lt, gte, lte, get, pick, omit } = rubico`,
+    `const panel = document.createElement('h1')`,
+    `document.body.appendChild(panel)`,
+    `const console = { log: msg => { panel.innerHTML = msg } }`,
+    code,
+    `})`,
+  ].join('\n')
   return script
 }
 
@@ -109,12 +115,24 @@ const runCode = codemirror => pipe([
 ])
 
 // const add = (a: int, b: int): int => a + b
-const testMirror = makeCodeMirror('codemirror-test', [
-  'const add = (a, b) => a + b',
-  'console.log(add(1, 2))',
+const testMirror = makeCodeMirror('test-codemirror', [
+  'const square = x => x ** 2',
+  '',
+  'const isOdd = x => x % 2 === 1',
+  '',
+  `const squaredOdds = pipe([
+    filter(isOdd),
+    map(square),
+  ])`,
+  '',
+  'console.log(squaredOdds([1, 2, 3, 4, 5]))',
 ].join('\n'))
 
-document.getElementById('codemirror-test-button').onclick = runCode(testMirror)
+document.getElementById('test-run-button').onclick = runCode(testMirror)
+
+const initCodeRunner = (rootID, initialCode) => {
+  const root = document.getElementById(rootID)
+}
 
 // capture console log of iframe and append html - https://stackoverflow.com/a/14925056/8993080
 
@@ -122,5 +140,4 @@ document.getElementById('codemirror-test-button').onclick = runCode(testMirror)
 <!--
 comment
 -->
-</body>
 </html>
