@@ -1,1 +1,1 @@
-# tour.rubico.land
+tour.rubico.land
