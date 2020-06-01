@@ -41,10 +41,14 @@ const { pipe, tap, get } = rubico
 const trace = tap(console.log)
 
 // (id, code) => CodeMirror
-const makeCodeMirror = (id, code) => CodeMirror(
-  document.getElementById(id),
-  { value: code, mode: 'javascript' },
-)
+const makeCodeMirror = (id, code) => {
+  const codemirror = CodeMirror(
+    document.getElementById(id),
+    { value: code, mode: 'javascript' },
+  )
+  codemirror.id = id
+  return codemirror
+}
 
 // code => html_string_with_code
 const generateScriptHTML = code => {
@@ -80,8 +84,9 @@ const toHTMLDocString = el => {
 }
 
 // htmlString => iframe
-const iframeInject = htmlString => {
+const iframeInject = codemirror => htmlString => {
   const iframe = document.createElement('iframe')
+  iframe.id = codemirror.id + '-iframe'
   iframe.src = `data:text/html;charset=utf-8,${encodeURI(htmlString)}`
   return iframe
 }
@@ -92,12 +97,15 @@ const runCode = codemirror => pipe([
   get('code'),
   generateScriptHTML,
   toHTMLDocString,
-  iframeInject,
+  iframeInject(codemirror),
   iframe => {
-    document.body.appendChild(iframe)
-    return iframe
+    const existingIFrame = document.getElementById(iframe.id)
+    if (existingIFrame) {
+      document.body.replaceChild(iframe, existingIFrame)
+    } else {
+      document.body.appendChild(iframe)
+    }
   },
-  // trace,
 ])
 
 const testMirror = makeCodeMirror('codemirror-test', `
