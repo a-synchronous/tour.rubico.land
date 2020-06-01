@@ -51,40 +51,39 @@ const makeCodeMirror = (id, code) => {
 }
 
 // code => html_string_with_code
-const generateScriptHTML = code => {
+const generateHTMLScript = code => {
   const script = document.createElement('script')
-  // script.innerHTML = code
-  script.defer = true
   script.innerHTML = `
-const hey = document.createElement('h1')
-hey.innerHTML = 'hey'
-document.body.appendChild(hey)
+const panel = document.createElement('h1')
+document.body.appendChild(panel)
+const console = {
+  log: message => {
+    panel.innerHTML = message
+  },
+}
+${code}
 `
   return script
 }
-/*
-var console = {
-    panel: $(parent.document.body).append('<div>'),
-    log: function(m){
-        this.panel.prepend('<div>'+m+'</div>');
-    },
-};
-console.log('message');
-*/
 
-// HTMLElement => html_doc_string
-const toHTMLDocString = el => {
-  const div = document.createElement('div')
+// HTMLElement => HTMLDocument
+const injectIntoNewHTMLDoc = el => {
   const html = document.createElement('html')
   const body = document.createElement('body')
   body.appendChild(el)
   html.appendChild(body)
-  div.appendChild(html)
+  return html
+}
+
+// HTMLElement => html_string
+const htmlToString = el => {
+  const div = document.createElement('div')
+  div.appendChild(el)
   return div.innerHTML
 }
 
 // htmlString => iframe
-const iframeInject = codemirror => htmlString => {
+const injectIntoIframe = codemirror => htmlString => {
   const iframe = document.createElement('iframe')
   iframe.id = codemirror.id + '-iframe'
   iframe.src = `data:text/html;charset=utf-8,${encodeURI(htmlString)}`
@@ -95,9 +94,10 @@ const runCode = codemirror => pipe([
   () => codemirror.getValue(),
   code => Babel.transform(code, {}),
   get('code'),
-  generateScriptHTML,
-  toHTMLDocString,
-  iframeInject(codemirror),
+  generateHTMLScript,
+  injectIntoNewHTMLDoc,
+  htmlToString,
+  injectIntoIframe(codemirror),
   iframe => {
     const existingIFrame = document.getElementById(iframe.id)
     if (existingIFrame) {
@@ -108,9 +108,10 @@ const runCode = codemirror => pipe([
   },
 ])
 
+// const add = (a: int, b: int): int => a + b
 const testMirror = makeCodeMirror('codemirror-test', [
-  // const add = (a: int, b: int): int => a + b
   'const add = (a, b) => a + b',
+  'console.log(add(1, 2))',
 ].join('\n'))
 
 document.getElementById('codemirror-test-button').onclick = runCode(testMirror)
