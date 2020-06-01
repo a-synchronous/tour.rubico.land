@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>tour.rubico</title>
+  <title>rubico.tour</title>
   <meta charset="UTF-8" />
   <meta name="description" content="a tour of rubico" />
   <meta name="keywords" content="functional,programming,javascript,typescript,asynchronous,tour,rubico" />
-  <meta property="og:title" content="tour.rubico" />
+  <meta property="og:title" content="rubico.tour" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://tour.rubico.land" />
   <meta property="og:image" content="assets/android-chrome-512x512.png" />
-  <meta property="og:site_name" content="tour.rubico" />
+  <meta property="og:site_name" content="rubico.tour" />
   <meta property="og:description" content="a tour of rubico" />
-  <meta name="twitter:title" content="tour.rubico" />
+  <meta name="twitter:title" content="rubico.tour" />
   <meta name="twitter:description" content="a tour of rubico" />
   <meta name="twitter:image:src" content="assets/android-chrome-512x512.png" />
   <meta name="twitter:domain" content="https://tour.rubico.land" />
@@ -28,40 +28,86 @@
   <script src="mode/javascript/javascript.js"></script>
 </head>
 <body>
-<div id="root"></div>
+<div id="react-root"></div>
+<div id="codemirror-test"></div>
+<button id="codemirror-test-button">run</button>
+<div id="codemirror-test-output"></div>
 <script>
 
-const loadScript = src => new Promise((resolve, reject) => {
+const { pipe, tap, get } = rubico
+
+// Babel.registerPlugin('@babel/plugin-transform-typescript')
+
+const trace = tap(console.log)
+
+// (id, code) => CodeMirror
+const makeCodeMirror = (id, code) => CodeMirror(
+  document.getElementById(id),
+  { value: code, mode: 'javascript' },
+)
+
+// code => html_string_with_code
+const generateScriptHTML = code => {
   const script = document.createElement('script')
-  script.type = 'text/javascript'
-  script.onload = resolve
-  script.onerror = () => reject(new Error(`Unable to load ${src}`))
-  script.src = src
-  document.getElementsByTagName('head')[0].appendChild(script)
-})
+  // script.innerHTML = code
+  script.defer = true
+  script.innerHTML = `
+const hey = document.createElement('h1')
+hey.innerHTML = 'hey'
+document.body.appendChild(hey)
+`
+  return script
+}
+/*
+var console = {
+    panel: $(parent.document.body).append('<div>'),
+    log: function(m){
+        this.panel.prepend('<div>'+m+'</div>');
+    },
+};
+console.log('message');
+*/
 
-const main = async () => {
-  await loadScript('https://unpkg.com/react-codemirror@1/dist/react-codemirror.js')
-
-  console.log('map', rubico.map)
+// HTMLElement => html_doc_string
+const toHTMLDocString = el => {
+  const div = document.createElement('div')
+  const html = document.createElement('html')
+  const body = document.createElement('body')
+  body.appendChild(el)
+  html.appendChild(body)
+  div.appendChild(html)
+  return div.innerHTML
 }
 
-console.log('script')
+// htmlString => iframe
+const iframeInject = htmlString => {
+  const iframe = document.createElement('iframe')
+  iframe.src = `data:text/html;charset=utf-8,${encodeURI(htmlString)}`
+  return iframe
+}
 
-/*
-console.log(
-  document.getElementById('deps-react')
-)
-*/
+const runCode = codemirror => pipe([
+  () => codemirror.getValue(),
+  code => Babel.transform(code, {}),
+  get('code'),
+  generateScriptHTML,
+  toHTMLDocString,
+  iframeInject,
+  iframe => {
+    document.body.appendChild(iframe)
+    return iframe
+  },
+  // trace,
+])
 
-/*
-ReactDOM.render(
-  <h1>Hello, world!</h1>,
-  document.getElementById('root')
-)
-*/
+const testMirror = makeCodeMirror('codemirror-test', `
+// const add = (a: int, b: int): int => a + b
+const add = (a, b) => a + b
+`)
 
-  // capture console log of iframe and append html - https://stackoverflow.com/a/14925056/8993080
+document.getElementById('codemirror-test-button').onclick = runCode(testMirror)
+
+// capture console log of iframe and append html - https://stackoverflow.com/a/14925056/8993080
 
 </script>
 <!--
