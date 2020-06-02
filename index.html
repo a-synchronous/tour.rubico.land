@@ -27,8 +27,38 @@
   <link rel="stylesheet" href="lib/codemirror.css">
   <script src="mode/javascript/javascript.js"></script>
 </head>
+<style>
+body {
+  padding-left: 1em;
+}
+p {
+  font-size: 1em;
+}
+code {
+  font-size: 1.15em;
+  color: blue;
+}
+textarea {
+  font-size: 1.15em;
+}
+</style>
 <body>
-  <div id="test2"></div>
+  <h1>Welcome to the rubico tour!</h1>
+  <p>
+    It's easy to compose functions with rubico. Here, we compose <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>
+  </p>
+  <div style="margin-left: 5px">
+    <code style="color: grey;">
+<pre>const {
+  pipe, fork, assign, tap, tryCatch, switchCase,
+  map, filter, reduce, transform,
+  any, all, and, or, not,
+  eq, gt, lt, gte, lte,
+  get, pick, omit,
+} = rubico</pre>
+    </code>
+  </div>
+  <div id="squaredOdds"></div>
 </body>
 
 <script src="main.js"></script>

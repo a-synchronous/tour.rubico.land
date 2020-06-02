@@ -67,7 +67,7 @@ const generateHTMLScript = code => {
       eq, gt, lt, gte, lte, get, pick, omit } = rubico`,
     `const panel = document.createElement('h1')`,
     `document.body.appendChild(panel)`,
-    `const console = { log: msg => { panel.innerHTML = msg } }`,
+    `const console = { log: (...msgs) => { panel.innerHTML = msgs.join(' ') } }`,
     code,
     `})`,
   ].join('\n')
@@ -146,7 +146,7 @@ const squaredOdds = pipe([
   map(square),
 ])
 
-console.log(squaredOdds([1, 2, 3, 4, 5]))
+console.log('squaredOdds:', squaredOdds([1, 2, 3, 4, 5]))
 `.trim())
 
 const appendCodeRunner = (parent, codeRunner) => {
@@ -154,4 +154,4 @@ const appendCodeRunner = (parent, codeRunner) => {
   codeRunner.refresh() // must call this _after_ appending
 }
 
-appendCodeRunner(document.body, codeRunner)
+appendCodeRunner(document.getElementById('squaredOdds'), codeRunner)
