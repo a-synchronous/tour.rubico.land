@@ -149,7 +149,7 @@ const squaredOdds = pipe([
   // reduce(add), // try uncommenting this line. What does this change?
 ])
 
-console.log('squaredOdds:', squaredOdds([1, 2, 3, 4, 5]))
+console.log('output:', squaredOdds([1, 2, 3, 4, 5]))
 `.trim())
 
 const appendCodeRunner = (parent, codeRunner) => {

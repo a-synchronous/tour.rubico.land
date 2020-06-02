@@ -35,6 +35,10 @@ body {
 p {
   font-size: 1em;
 }
+iframe {
+  pointer-events: none;
+  /* border: none; */
+}
 code {
   font-size: 1.15em;
   color: blue;
@@ -56,13 +60,13 @@ textarea {
     class="giphy-embed"
     allowFullScreen
   ></iframe>
-  <p>and thanks for stopping by! This tour of rubico will cover:</p>
+  <p>and thanks for stopping by! This tour of rubico covers</p>
   <ol>
     <li><a href="#function-composition">Function Composition</a></li>
   </ol>
   <p>
     You can expect each of the above sections to contain an <b>editable</b> and <b>runnable</b> example.
-    You'll get a lot more out of this page by playing with the examples.
+    <span style="font-size: .90em">(You'll get a lot more out of this page by playing with the examples)</span>
   </p>
   <div style="margin-left: 5px">
     <code style="color: grey;">
@@ -74,7 +78,10 @@ const {
   any, all, and, or, not,
   eq, gt, lt, gte, lte,
   get, pick, omit,
-} = rubico</pre>
+} = rubico
+
+const trace = tap(console.log) // for easy debugging
+</pre>
     </code>
   </div>
   <p>
@@ -82,11 +89,12 @@ const {
   </p>
   <h2 id="function-composition">Function Composition</h2>
   <p>
-    It's easy to compose functions with rubico. In this example, we'll declare <code>squaredOdds</code>
-    from <code>square</code> and <code>isOdd</code>.
+    It's easy to compose functions with rubico; all you need is <code>pipe</code>. In this example, we declare <code>squaredOdds</code>
+    from <code>square</code> and <code>isOdd</code>. Also, we use <code>map</code> and <code>filter</code> to apply the transformations to
+    the input array <b>[1, 2, 3, 4, 5]</b>.
   </p>
   <p>
-    If you <b>run</b> the example as is, you should expect to see the array <b>[1, 9, 25]</b>.
+    If you <b>run</b> the example as is, you should expect the output array <b>[1, 9, 25]</b>.
   </p>
   <div id="function-composition-example"></div>
 </body>
