@@ -63,6 +63,7 @@ textarea {
   <p>and thanks for stopping by! This tour of rubico covers</p>
   <ol>
     <li><a href="#function-composition">Function Composition</a></li>
+    <li><a href="#data-transformation">Data Transformation</a></li>
   </ol>
   <p>
     You can expect each of the above sections to contain an <b>editable</b> and <b>runnable</b> example.
@@ -87,11 +88,12 @@ const trace = tap(console.log) // for easy debugging
   <p>
     👆 Additionally, these rubico functions are globally available to you.
   </p>
+  <br>
   <h2 id="function-composition">Function Composition</h2>
   <p>
-    It's easy to compose functions with rubico; all you need is <code>pipe</code>. In this example, we declare <code>squaredOdds</code>
-    from <code>square</code> and <code>isOdd</code>. Also, we use <code>map</code> and <code>filter</code> to apply the transformations to
-    the input array <b>[1, 2, 3, 4, 5]</b>.
+    It's easy to compose functions with rubico; all you need is <code>pipe</code> and some functions to chain. In this example,
+    we declare <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>. Also, we use <code>map</code>
+    and <code>filter</code> to apply the transformations to the input array <b>[1, 2, 3, 4, 5]</b>.
   </p>
   <p>
     If you <b>run</b> the example as is, you should expect the output array <b>[1, 9, 25]</b>.
