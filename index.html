@@ -22,157 +22,17 @@
   <script src="https://unpkg.com/rubico@1/index.js" crossorigin></script>
   <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone@7.10/babel.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7.10/babel.min.js" crossorigin defer></script>
   <script src="lib/codemirror.js"></script>
   <link rel="stylesheet" href="lib/codemirror.css">
   <script src="mode/javascript/javascript.js"></script>
 </head>
 <body>
-  <div id="test">
-    <div id="test-codemirror"></div>
-    <button id="test-run-button">run</button>
-  </div>
+  <div id="test2"></div>
 </body>
 
-<script>
+<script src="main.js"></script>
 
-const { pipe, tap, get } = rubico
+<!-- comment -->
 
-// Babel.registerPlugin('@babel/plugin-transform-typescript')
-
-const trace = tap(console.log)
-
-const isString = x => typeof x === 'string'
-
-const isFunction = x => typeof x === 'function'
-
-const isPromise = x => x && typeof x.then === 'function'
-
-/*
-const Special = x => {
-  return div(
-    h1('yo'),
-    p('hello'),
-    div('aye'),
-  )
-}
-*/
-
-const e = type => (...elements) => {
-  const y = document.createElement(type)
-  for (const el of elements) {
-    if (isString(el)) {
-      y.appendChild(document.createTextNode(el))
-    } else {
-      y.appendChild(el)
-    }
-  }
-  return y
-}
-
-const div = e('div')
-const h1 = e('h1')
-const p = e('p')
-
-const CodeRunner = initialCode => {
-}
-
-// (id, code) => CodeMirror
-const makeCodeMirror = (id, code) => {
-  const codemirror = CodeMirror(
-    document.getElementById(id),
-    { value: code, mode: 'javascript' },
-  )
-  codemirror.id = id
-  return codemirror
-}
-
-// code => html_string_with_code
-const generateHTMLScript = code => {
-  const script = document.createElement('script')
-  script.innerHTML = [
-    `fetch('https://unpkg.com/rubico@1/index.js')`,
-    `.then(res => res.text())`,
-    `.then(text => {`,
-    `Function(text)()`,
-    `const { pipe, fork, assign, tap, tryCatch, switchCase,
-      map, filter, reduce, transform, any, all, and, or, not,
-      eq, gt, lt, gte, lte, get, pick, omit } = rubico`,
-    `const panel = document.createElement('h1')`,
-    `document.body.appendChild(panel)`,
-    `const console = { log: msg => { panel.innerHTML = msg } }`,
-    code,
-    `})`,
-  ].join('\n')
-  return script
-}
-
-// HTMLElement => HTMLDocument
-const injectIntoNewHTMLDoc = el => {
-  const html = document.createElement('html')
-  const body = document.createElement('body')
-  body.appendChild(el)
-  html.appendChild(body)
-  return html
-}
-
-// HTMLElement => html_string
-const htmlToString = el => {
-  const div = document.createElement('div')
-  div.appendChild(el)
-  return div.innerHTML
-}
-
-// htmlString => iframe
-const injectIntoIframe = codemirror => htmlString => {
-  const iframe = document.createElement('iframe')
-  iframe.id = codemirror.id + '-iframe'
-  iframe.src = `data:text/html;charset=utf-8,${encodeURI(htmlString)}`
-  return iframe
-}
-
-const runCode = codemirror => pipe([
-  () => codemirror.getValue(),
-  code => Babel.transform(code, {}),
-  get('code'),
-  generateHTMLScript,
-  injectIntoNewHTMLDoc,
-  htmlToString,
-  injectIntoIframe(codemirror),
-  iframe => {
-    const existingIFrame = document.getElementById(iframe.id)
-    if (existingIFrame) {
-      document.body.replaceChild(iframe, existingIFrame)
-    } else {
-      document.body.appendChild(iframe)
-    }
-  },
-])
-
-// const add = (a: int, b: int): int => a + b
-const testMirror = makeCodeMirror('test-codemirror', [
-  'const square = x => x ** 2',
-  '',
-  'const isOdd = x => x % 2 === 1',
-  '',
-  `const squaredOdds = pipe([
-    filter(isOdd),
-    map(square),
-  ])`,
-  '',
-  'console.log(squaredOdds([1, 2, 3, 4, 5]))',
-].join('\n'))
-
-document.getElementById('test-run-button').onclick = runCode(testMirror)
-
-const initCodeRunner = (rootID, initialCode) => {
-  const root = document.getElementById(rootID)
-}
-
-// capture console log of iframe and append html - https://stackoverflow.com/a/14925056/8993080
-
-</script>
-<!--
-comment
--->
 </html>
