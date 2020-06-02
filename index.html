@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>rubico.tour</title>
+  <title>tour.rubico.land</title>
   <meta charset="UTF-8" />
   <meta name="description" content="a tour of rubico" />
   <meta name="keywords" content="functional,programming,javascript,typescript,asynchronous,tour,rubico" />
-  <meta property="og:title" content="rubico.tour" />
+  <meta property="og:title" content="tour.rubico.land" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://tour.rubico.land" />
   <meta property="og:image" content="assets/android-chrome-512x512.png" />
-  <meta property="og:site_name" content="rubico.tour" />
+  <meta property="og:site_name" content="tour.rubico.land" />
   <meta property="og:description" content="a tour of rubico" />
-  <meta name="twitter:title" content="rubico.tour" />
+  <meta name="twitter:title" content="tour.rubico.land" />
   <meta name="twitter:description" content="a tour of rubico" />
   <meta name="twitter:image:src" content="assets/android-chrome-512x512.png" />
   <meta name="twitter:domain" content="https://tour.rubico.land" />
@@ -30,6 +30,7 @@
 <style>
 body {
   padding-left: 1em;
+  max-width: 50%;
 }
 p {
   font-size: 1em;
@@ -44,13 +45,24 @@ textarea {
 </style>
 <body>
   <h1>Welcome to the rubico tour!</h1>
+  <p style="font-size: .75em">
+    If you're looking for the home page, please head on back to
+    <a href="https://github.rubico.land" style="font-size: 1.15em">github</a>
+  </p>
+  <p>Thanks for stopping by! This tour of rubico will cover:</p>
+  <ol>
+    <li><a href="#function-composition">Function Composition</a></li>
+  </ol>
   <p>
-    It's easy to compose functions with rubico. Here, we compose <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>
+    You can expect each of the above sections to contain an <b>editable</b> and <b>runnable</b> example.
+    You'll get a lot more out of this page by playing with the examples.
   </p>
   <div style="margin-left: 5px">
     <code style="color: grey;">
-<pre>const {
-  pipe, fork, assign, tap, tryCatch, switchCase,
+<pre>
+const {
+  pipe, fork, assign,
+  tap, tryCatch, switchCase,
   map, filter, reduce, transform,
   any, all, and, or, not,
   eq, gt, lt, gte, lte,
@@ -58,7 +70,16 @@ textarea {
 } = rubico</pre>
     </code>
   </div>
-  <div id="squaredOdds"></div>
+  <p>
+    👆 Additionally, these rubico functions are globally available to you.
+  </p>
+  <h2 id="function-composition">Function Composition</h2>
+  <p>
+    It's easy to compose functions with rubico. In this example, we'll declare <code>squaredOdds</code>
+    from <code>square</code> and <code>isOdd</code>. If you <b>run</b> the example as is, you should
+    expect to see the array [1, 9, 25].
+  </p>
+  <div id="function-composition-example"></div>
 </body>
 
 <script src="main.js"></script>

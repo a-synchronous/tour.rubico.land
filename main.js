@@ -141,9 +141,12 @@ const square = x => x ** 2
 
 const isOdd = x => x % 2 === 1
 
+const add = (a, b) => a + b
+
 const squaredOdds = pipe([
   filter(isOdd),
   map(square),
+  // reduce(add), // try uncommenting this line. What does this change?
 ])
 
 console.log('squaredOdds:', squaredOdds([1, 2, 3, 4, 5]))
@@ -154,4 +157,4 @@ const appendCodeRunner = (parent, codeRunner) => {
   codeRunner.refresh() // must call this _after_ appending
 }
 
-appendCodeRunner(document.getElementById('squaredOdds'), codeRunner)
+appendCodeRunner(document.getElementById('function-composition-example'), codeRunner)
