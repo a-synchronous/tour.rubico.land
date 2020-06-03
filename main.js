@@ -154,7 +154,12 @@ const CodeRunner = mode => pipe([
 
 const CodeRunnerJS = CodeRunner('javascript')
 
-const codeRunner = CodeRunnerJS(`
+const appendCodeRunner = (parent, codeRunner) => {
+  parent.appendChild(codeRunner)
+  codeRunner.refresh() // must call this _after_ appending
+}
+
+appendCodeRunner(document.getElementById('function-composition-example'), CodeRunnerJS(`
 const square = x => x ** 2
 
 const isOdd = x => x % 2 === 1
@@ -168,11 +173,4 @@ const squaredOdds = pipe([
 ])
 
 console.log('output:', squaredOdds([1, 2, 3, 4, 5]))
-`.trim())
-
-const appendCodeRunner = (parent, codeRunner) => {
-  parent.appendChild(codeRunner)
-  codeRunner.refresh() // must call this _after_ appending
-}
-
-appendCodeRunner(document.getElementById('function-composition-example'), codeRunner)
+`.trim()))
