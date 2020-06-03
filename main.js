@@ -56,21 +56,12 @@ const figure = e('figure')
 const button = e('button')
 const iframe = e('iframe')
 
-// (id, code) => CodeMirror
-const makeCodeMirror1 = (id, code) => {
-  const codemirror = CodeMirror(
-    document.getElementById(id),
-    { value: code, mode: 'javascript' },
-  )
-  codemirror.id = id
-  return codemirror
-}
-
 const templateCodeSandbox = code => `
-fetch('https://unpkg.com/rubico@1/index.js')
-.then(res => res.text())
-.then(text => {
-  Function(text)()
+Promise.all([
+  fetch('https://unpkg.com/rubico@1/index.js').then(res => res.text()),
+]).then(texts => {
+  texts.forEach(text => { Function(text)() })
+
   const {
     pipe, fork, assign,
     tap, tryCatch, switchCase,
@@ -86,9 +77,39 @@ fetch('https://unpkg.com/rubico@1/index.js')
   codeArea.appendChild(panel)
   document.body.appendChild(panel)
 
-  const fmt = x => {
-    if (Array.isArray(x)) {
-      return '[' + x.join(', ') + ']'
+  const isDefined = x => x !== null && x !== undefined
+
+  const isString = x => typeof x === 'string'
+
+  const isArray = Array.isArray
+
+  const is = fn => x => isDefined(x) && x.constructor === fn
+
+  const fmt = (x, depth = 0) => {
+    if (depth > 0 && isString(x)) {
+      return "'" + x + "'"
+    }
+    if (isArray(x)) {
+      return '[' + map(xi => fmt(xi, depth + 1))(x).join(', ') + ']'
+    }
+    if (is(Object)(x)) {
+      let y = '{ '
+      const entries = []
+      for (const k in x) entries.push(k + ': ' + fmt(x[k], depth + 1))
+      y += entries.join(', ')
+      y += ' }'
+      return y
+    }
+    if (is(Set)(x)) {
+      return 'Set { ' + [...map(xi => fmt(xi, depth + 1))(x)].join(', ') + ' }'
+    }
+    if (is(Map)(x)) {
+      let y = 'Map { '
+      const entries = []
+      for (const [k, v] of x) entries.push(k + ' => ' + fmt(v, depth + 1))
+      y += entries.join(', ')
+      y += ' }'
+      return y
     }
     return x
   }
@@ -153,26 +174,39 @@ const PlayButton = () => {
 }
 
 const RunButton = () => {
-  const displayButton = PlayButton()
-  console.log(displayButton)
+  // const displayButton = PlayButton()
+  const displayButton = button('run')
+  displayButton.style.padding = '.25em .75em'
+  displayButton.style.borderRadius = '2px'
+  displayButton.style.cursor = 'pointer'
+  displayButton.style.height = '2em'
   const y = div(displayButton)
+  y.style.display = 'grid'
+  y.style.gridTemplateColumns = '3em 1em auto'
   y.setOnClick = fn => {
     displayButton.onclick = () => {
       if (y.childElementCount < 2) {
-        // const outputSpan = span({ text: ' >', style: { color: 'blue' } })
-        const outputSpan = span(' >')
-        outputSpan.style.color = '#3f72fc'
-        outputSpan.style.fontSize = '.80em'
-        outputSpan.style.fontWeight = '625'
-        outputSpan.style.position = 'relative'
-        outputSpan.style.bottom = '-1.8em'
-        outputSpan.style.left = '-0.5em'
-        y.appendChild(outputSpan)
+        const caret = span(' >')
+        caret.style.color = '#3f72fc'
+        caret.style.fontSize = '.80em'
+        caret.style.fontWeight = '625'
+        caret.style.position = 'relative'
+        caret.style.right = '-0.75em'
+        caret.style.bottom = '-0.65em'
+        y.appendChild(caret)
       }
       fn()
     }
   }
   return y
+}
+
+const OutputArea = () => {
+  const ifr = iframe()
+  ifr.style.height = '10em'
+  ifr.style.position = 'relative'
+  ifr.style.bottom = '-0.05em'
+  return ifr
 }
 
 // code => codeRunner
@@ -181,7 +215,7 @@ const CodeRunner = mode => pipe([
     code: identity,
     codeArea: () => div(),
     runButton: RunButton,
-    outputArea: () => iframe(),
+    outputArea: OutputArea,
   }),
   assign({
     cmInstance: ({
@@ -191,6 +225,7 @@ const CodeRunner = mode => pipe([
       lineWrapping: true,
       lineNumbers: true,
       theme: 'default',
+      // theme: 'base16-dark',
     }),
     codeRunner: ({
       codeArea, runButton
@@ -204,7 +239,8 @@ const CodeRunner = mode => pipe([
       iframeSrc => {
         outputArea.src = iframeSrc
         if (!didRenderOutputArea) {
-          codeRunner.appendChild(outputArea)
+          // codeRunner.appendChild(outputArea)
+          runButton.appendChild(outputArea)
           didRenderOutputArea = true
         }
       },
