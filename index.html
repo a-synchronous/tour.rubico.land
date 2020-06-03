@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>tour.rubico.land</title>
+  <title>rubico tour</title>
   <meta charset="UTF-8" />
   <meta name="description" content="a tour of rubico" />
   <meta name="keywords" content="functional,programming,javascript,typescript,asynchronous,tour,rubico" />
-  <meta property="og:title" content="tour.rubico.land" />
+  <meta property="og:title" content="rubico tour" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://tour.rubico.land" />
   <meta property="og:image" content="assets/android-chrome-512x512.png" />
   <meta property="og:site_name" content="tour.rubico.land" />
   <meta property="og:description" content="a tour of rubico" />
-  <meta name="twitter:title" content="tour.rubico.land" />
+  <meta name="twitter:title" content="rubico tour" />
   <meta name="twitter:description" content="a tour of rubico" />
   <meta name="twitter:image:src" content="assets/android-chrome-512x512.png" />
   <meta name="twitter:domain" content="https://tour.rubico.land" />
@@ -30,7 +30,14 @@
 <style>
 body {
   padding-left: 1em;
-  max-width: 50%;
+  display: grid;
+  grid-gap: 1em;
+}
+section {
+  max-width: 75%;
+}
+b {
+  white-space: nowrap;
 }
 p {
   font-size: 1em;
@@ -48,27 +55,25 @@ textarea {
 }
 </style>
 <body>
-  <h1>Welcome to the rubico tour 🚎</h1>
-  <p style="font-size: .75em">
-    If you're looking for the home page, please head on back to
-    <a href="https://github.rubico.land" style="font-size: 1.15em">github</a>
-  </p>
-  <img
-    src="assets/welcome-stephen-colbert.gif"
-    width="480"
-  />
-  <p>Thanks for stopping by! This tour of rubico covers</p>
-  <ol>
-    <li><a href="#function-composition">Function Composition</a></li>
-    <li><a href="#data-transformation">Data Transformation</a></li>
-  </ol>
-  <p>
-    You can expect each of the above sections to contain an <b>editable</b> and <b>runnable</b> example.
-    <span style="font-size: .90em">(You'll get a lot more out of this page by playing with the examples)</span>
-  </p>
-  <div style="margin-left: 5px">
-    <code style="color: grey;">
-<pre>
+  <section>
+    <h1>You've arrived at the rubico tour! 🚎</h1>
+    <img
+      src="assets/welcome-stephen-colbert.gif"
+      width="480"
+    />
+    <p>Glad you could make it. This tour of rubico covers</p>
+    <ol>
+      <li><a href="#function-composition">Function Composition</a></li>
+      <li><a href="#data-transformation">Data Transformation</a></li>
+      <li><a href="#control-flow">Control Flow</a></li>
+    </ol>
+    <p>
+      You can expect each of the above sections to contain an <b>editable</b> and <b>runnable</b> example.<br>
+      <span style="font-size: .90em">(You'll get a lot more out of this page by playing with the examples)</span>
+    </p>
+    <div style="margin-left: 5px">
+      <code style="color: grey;">
+  <pre>
 const {
   pipe, fork, assign,
   tap, tryCatch, switchCase,
@@ -79,23 +84,42 @@ const {
 } = rubico
 
 const trace = tap(console.log) // for easy debugging
-</pre>
-    </code>
-  </div>
-  <p>
-    👆 Additionally, these rubico functions are globally available to you.
-  </p>
-  <br>
-  <h2 id="function-composition">Function Composition</h2>
-  <p>
-    It's easy to compose functions with rubico; all you need is <code>pipe</code> and some functions to chain. In this example,
-    we declare <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>. Also, we use <code>map</code>
-    and <code>filter</code> to apply the transformations to the input array <b>[1, 2, 3, 4, 5]</b>.
-  </p>
-  <p>
-    If you <b>run</b> the example as is, you should expect the output array <b>[1, 9, 25]</b>.
-  </p>
-  <div id="function-composition-example"></div>
+  </pre>
+      </code>
+    </div>
+    <p>
+      👆 Additionally, these rubico functions and helpers are globally available to you in all code areas.
+    </p>
+  </section>
+
+  <section id="function-composition">
+    <h2>Function Composition</h2>
+    <p>
+      It's easy to compose functions with rubico, just <a href="https://github.rubico.land#pipe">pipe</a> them together.
+      If you need to act on collections, e.g. an array, reach for <a href="https://github.rubico.land#map">map</a> and
+      <a href="https://github.rubico.land#filter">filter</a>. In this example, we declare <code>squaredOdds</code>
+      from <code>square</code> and <code>isOdd</code>.
+    </p>
+    <p>
+      By running the example as is, we expect the input array <b>[1, 2, 3, 4, 5]</b> to transform into
+      the output array <b>[1, 9, 25]</b>.
+    </p>
+    <div id="function-composition-example"></div>
+  </section>
+
+  <section>
+    <img
+      src="assets/thank-me-later-michael-scott.gif"
+      width="360"
+    />
+    <p>
+      That's all folks, thanks for reading! If you found the tour helpful, please leave a 🌟 at rubico's <a href="https://github.rubico.land">github repo</a>.
+    </p>
+    <p>
+      This website was created with rubico. You can find the full source on <a href="https://github.com/a-synchronous/tour.rubico.land">github</a>
+    </p>
+    <p style="font-size: 12px; color: grey">(c) 2020 Richard Tong. MIT Licensed.</p>
+  </section>
 </body>
 
 <script src="main.js"></script>
