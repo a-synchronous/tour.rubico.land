@@ -278,8 +278,8 @@ const add = (a, b) => a + b
 
 const squaredOdds = pipe([
   filter(isOdd),
-  // trace,
   map(square),
+  // trace,
   // reduce(add), // try uncommenting this reduce statement. What happens here?
 ])
 
