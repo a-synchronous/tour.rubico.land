@@ -54,23 +54,37 @@ const makeCodeMirror1 = (id, code) => {
   return codemirror
 }
 
+const templateCodeSandbox = code => `
+fetch('https://unpkg.com/rubico@1/index.js')
+.then(res => res.text())
+.then(text => {
+  Function(text)()
+  const {
+    pipe, fork, assign,
+    tap, tryCatch, switchCase,
+    map, filter, reduce, transform,
+    any, all, and, or, not,
+    eq, gt, lt, gte, lte,
+    get, pick, omit,
+  } = rubico
+  const panel = document.createElement('h1')
+  document.body.appendChild(panel)
+  const console = {
+    log: (...msgs) => {
+      for (const msg of msgs) {
+        panel.innerHTML += msg + '\\n'
+      }
+    },
+  }
+  const trace = tap(console.log)
+  ${code}
+})
+`.trim()
+
 // code => html_string_with_code
 const generateHTMLScript = code => {
   const script = document.createElement('script')
-  script.innerHTML = [
-    `fetch('https://unpkg.com/rubico@1/index.js')`,
-    `.then(res => res.text())`,
-    `.then(text => {`,
-    `Function(text)()`,
-    `const { pipe, fork, assign, tap, tryCatch, switchCase,
-      map, filter, reduce, transform, any, all, and, or, not,
-      eq, gt, lt, gte, lte, get, pick, omit } = rubico`,
-    `const panel = document.createElement('h1')`,
-    `document.body.appendChild(panel)`,
-    `const console = { log: (...msgs) => { panel.innerHTML = msgs.join(' ') } }`,
-    code,
-    `})`,
-  ].join('\n')
+  script.innerHTML = templateCodeSandbox(code)
   return script
 }
 
@@ -111,7 +125,11 @@ const CodeRunner = mode => pipe([
   assign({
     cmInstance: ({
       codeArea, code
-    }) => CodeMirror(codeArea, { value: code, mode }),
+    }) => CodeMirror(codeArea, {
+      mode, value: code,
+      lineWrapping: true,
+      lineNumbers: true,
+    }),
     codeRunner: ({
       codeArea, runButton
     }) => div(codeArea, runButton),
