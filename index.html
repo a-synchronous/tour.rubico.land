@@ -29,12 +29,9 @@
 </head>
 <style>
 body {
-  padding-left: 1em;
   display: grid;
+  grid-template-columns: 1% 90% 9%;
   grid-gap: 1em;
-}
-section {
-  max-width: 75%;
 }
 b {
   white-space: nowrap;
@@ -53,11 +50,18 @@ code {
 textarea {
   font-size: 1.15em;
 }
+img {
+  height: 100%;
+  width: 100%;
+  max-width: 678px;
+}
 </style>
 <body>
+  <div></div>
+  <div>
   <section>
     <h1>You've arrived at the rubico tour! 🚎</h1>
-    <img src="assets/welcome-stephen-colbert.gif" width="480" />
+    <img src="assets/welcome-stephen-colbert.gif" />
     <p>Glad you could make it. This tour covers</p>
     <ol>
       <li><a href="#function-composition">Function Composition</a></li>
@@ -123,7 +127,7 @@ const trace = tap(console.log) // for easy debugging
   </section>
 
   <section>
-    <img src="assets/thank-me-later-michael-scott.gif" width="360" />
+    <img src="assets/thank-me-later-michael-scott.gif" />
     <p>
       That's all folks, thanks for reading! If you found the tour helpful, please leave a 🌟 at the <a href="https://github.rubico.land">github repo</a>.
     </p>
@@ -132,6 +136,8 @@ const trace = tap(console.log) // for easy debugging
     </p>
     <p style="font-size: 12px; color: grey">(c) 2020 Richard Tong. MIT Licensed.</p>
   </section>
+  </div>
+  <div></div>
 </body>
 
 <script src="main.js"></script>
