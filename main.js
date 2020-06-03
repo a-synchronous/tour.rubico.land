@@ -260,7 +260,7 @@ const appendCodeRunner = (parent, codeRunner) => {
 appendCodeRunner(document.getElementById('data-last-example'), CodeRunnerJS(`
 const numbers = [1, 2, 3, 4, 5]
 
-const triple = x => x * 3 // try changing the 3 to 30
+const triple = x => x * 3
 
 console.log('data first: ', numbers.map(triple)) // numbers (data) is first
 
@@ -278,8 +278,9 @@ const add = (a, b) => a + b
 
 const squaredOdds = pipe([
   filter(isOdd),
+  // trace,
   map(square),
-  // reduce(add), // try uncommenting this line. What does this change?
+  // reduce(add), // try uncommenting this reduce statement. What happens here?
 ])
 
 console.log('output:', squaredOdds(numbers))
