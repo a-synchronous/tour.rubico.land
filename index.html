@@ -25,6 +25,7 @@
   <script src="https://unpkg.com/@babel/standalone@7.10/babel.min.js" crossorigin defer></script>
   <script src="lib/codemirror.js"></script>
   <link rel="stylesheet" href="lib/codemirror.css">
+  <link rel="stylesheet" href="theme/base16-dark.css">
   <script src="mode/javascript/javascript.js"></script>
 </head>
 <style>
@@ -40,8 +41,10 @@ p {
   font-size: 1em;
 }
 iframe {
-  pointer-events: none;
-  /* border: none; */
+  /* pointer-events: none; */
+  border: none;
+  width: 100%;
+  height: 100%;
 }
 code {
   font-size: 1.15em;
@@ -53,17 +56,59 @@ textarea {
 img {
   height: 100%;
   width: 100%;
-  max-width: 678px;
+  max-width: 268px;
+}
+
+/*
+play button 
+https://stackoverflow.com/questions/28639142/css-creating-a-play-button/28639751
+*/
+
+figure {
+  background: #ddd;
+  width: 0;
+  height: 1.5em;
+  z-index: 100;
+  position: relative;
+  top: -1.5em;
+  left: -3em;
+}
+
+figure button[name="play"] {
+  width: 50px;
+  height: 50px;
+  background: green;
+  border: none;
+  border-radius: 100%;
+  margin: auto;
+  cursor: pointer;
+}
+figure button[name="play"]:focus {
+  outline: 0;
+  border: 1px solid hsl(210, 58%, 69%);
+  box-shadow: 0 0 0 3px hsla(210, 76%, 57%, 0.5);
+}
+
+figure button[name="play"]::after {
+  content: '';
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  left: 3px;
+  border-style: solid;
+  border-width: 10px 0 10px 20px;
+  border-color: transparent transparent transparent white;
 }
 </style>
 <body>
   <div></div>
   <div>
   <section>
-    <h1>You've arrived at the rubico tour! 🚎</h1>
+    <h1>You've arrived at the rubico tour!</h1>
     <img src="assets/welcome-stephen-colbert.gif" />
     <p>Glad you could make it. This tour covers</p>
     <ol>
+      <li><a href="#data-last">Data Last</a></li>
       <li><a href="#function-composition">Function Composition</a></li>
       <li><a href="#optional-asynchrony">Optional Asynchrony</a></li>
       <li><a href="#data-composition">Data Composition</a></li>
@@ -113,6 +158,12 @@ const trace = tap(console.log)
 
   <section id="optional-asynchrony">
     <h2>Optional Asynchrony</h2>
+    <p>
+      You can pass rubico sync or async functions. When you pass async functions, rubico handles the promise resolution for you.
+      When you pass sync functions, rubico evaluates everything synchronously. Let's take a look with
+      <a href="https://github.rubico.land#map">map</a> and <a href="https://github.rubico.land#filter">filter</a>.
+    </p>
+    <div id="optional-asynchrony-example"></div>
   </section>
 
   <section id="data-composition">

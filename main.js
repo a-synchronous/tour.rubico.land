@@ -30,11 +30,13 @@ const Special = x => {
 }
 */
 
+const text = document.createTextNode.bind(document)
+
 const e = type => (...elements) => {
   const y = document.createElement(type)
   for (const el of elements) {
     if (isString(el)) {
-      y.appendChild(document.createTextNode(el))
+      y.appendChild(text(el))
     } else {
       y.appendChild(el)
     }
@@ -46,9 +48,11 @@ const e = type => (...elements) => {
 }
 
 // it's not all about jsx
+const span = e('span')
 const div = e('div')
 const h1 = e('h1')
 const p = e('p')
+const figure = e('figure')
 const button = e('button')
 const iframe = e('iframe')
 
@@ -75,17 +79,34 @@ fetch('https://unpkg.com/rubico@1/index.js')
     eq, gt, lt, gte, lte,
     get, pick, omit,
   } = rubico
-  const panel = document.createElement('h1')
+
+  const codeArea = document.createElement('code')
+  codeArea.style.fontSize = '1.25em'
+  const panel = document.createElement('pre')
+  codeArea.appendChild(panel)
   document.body.appendChild(panel)
+
+  const fmt = x => {
+    if (Array.isArray(x)) {
+      return '[' + x.join(', ') + ']'
+    }
+    return x
+  }
+
   const console = {
     log: (...msgs) => {
-      for (const msg of msgs) {
-        panel.innerHTML += msg + '\\n'
-      }
+      panel.innerHTML += msgs.map(fmt).join(' ')
+      panel.innerHTML += '\\n'
     },
   }
+
   const trace = tap(console.log)
-  ${code}
+
+  try {
+    ${code}
+  } catch (e) {
+    console.log(e)
+  }
 })
 `.trim()
 
@@ -122,12 +143,44 @@ const transformCodeToIFrameSrc = pipe([
   htmlString => `data:text/html;charset=utf-8,${encodeURI(htmlString)}`,
 ])
 
+// https://stackoverflow.com/questions/28639142/css-creating-a-play-button/28639751
+const PlayButton = () => {
+  const out = figure()
+  const btn = button()
+  btn.name = 'play'
+  out.appendChild(btn)
+  return out
+}
+
+const RunButton = () => {
+  const displayButton = PlayButton()
+  console.log(displayButton)
+  const y = div(displayButton)
+  y.setOnClick = fn => {
+    displayButton.onclick = () => {
+      if (y.childElementCount < 2) {
+        // const outputSpan = span({ text: ' >', style: { color: 'blue' } })
+        const outputSpan = span(' >')
+        outputSpan.style.color = '#3f72fc'
+        outputSpan.style.fontSize = '.80em'
+        outputSpan.style.fontWeight = '625'
+        outputSpan.style.position = 'relative'
+        outputSpan.style.bottom = '-1.8em'
+        outputSpan.style.left = '-0.5em'
+        y.appendChild(outputSpan)
+      }
+      fn()
+    }
+  }
+  return y
+}
+
 // code => codeRunner
 const CodeRunner = mode => pipe([
   fork({
     code: identity,
     codeArea: () => div(),
-    runButton: () => button('run'),
+    runButton: RunButton,
     outputArea: () => iframe(),
   }),
   assign({
@@ -137,6 +190,7 @@ const CodeRunner = mode => pipe([
       mode, value: code,
       lineWrapping: true,
       lineNumbers: true,
+      theme: 'default',
     }),
     codeRunner: ({
       codeArea, runButton
@@ -144,7 +198,7 @@ const CodeRunner = mode => pipe([
   }),
   ({ code, codeArea, runButton, cmInstance, codeRunner, outputArea }) => {
     let didRenderOutputArea = false
-    runButton.onclick = pipe([
+    runButton.setOnClick(pipe([
       () => cmInstance.getValue(),
       transformCodeToIFrameSrc,
       iframeSrc => {
@@ -154,7 +208,7 @@ const CodeRunner = mode => pipe([
           didRenderOutputArea = true
         }
       },
-    ])
+    ]))
     codeRunner.refresh = cmInstance.refresh.bind(cmInstance)
     return codeRunner
   },
@@ -181,4 +235,14 @@ const squaredOdds = pipe([
 ])
 
 console.log('output:', squaredOdds([1, 2, 3, 4, 5]))
-`.trim()))
+`.trimStart()))
+
+/*
+appendCodeRunner(document.getElementById('optional-asynchrony-example'), CodeRunnerJS(`
+const getDataAsync = () => fetch(
+  'https://jsonplaceholder.typicode.com/todos/1'
+).then(res => res.json())
+
+const getDataSync = () => ({ data })
+`)) // TODO: finish code example here
+*/
