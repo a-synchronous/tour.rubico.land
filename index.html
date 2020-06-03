@@ -30,10 +30,10 @@
 <style>
 body {
   display: grid;
-  grid-template-columns: 1% 90% 9%;
+  grid-template-columns: auto 80% auto;
   grid-gap: 1em;
 }
-b {
+b, a {
   white-space: nowrap;
 }
 p {
@@ -86,7 +86,8 @@ const {
   get, pick, omit,
 } = rubico
 
-const trace = tap(console.log) // for easy debugging
+// put this in a pipe
+const trace = tap(console.log)
   </pre>
       </code>
     </div>
