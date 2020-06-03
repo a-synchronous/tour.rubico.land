@@ -1,7 +1,7 @@
-/* rubico v1.1.7
- * https://github.com/a-synchronous/rubico
- * (c) 2019 Richard Tong
- * rubico may be freely distributed under the MIT license.
+/* tour.rubico.land
+ * https://github.com/a-synchronous/tour.rubico.land
+ * (c) 2020 Richard Tong
+ * tour.rubico.land may be freely distributed under the MIT license.
  */
 
 'use strict'
