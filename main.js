@@ -257,7 +257,19 @@ const appendCodeRunner = (parent, codeRunner) => {
   codeRunner.refresh() // must call this _after_ appending
 }
 
+appendCodeRunner(document.getElementById('data-last-example'), CodeRunnerJS(`
+const numbers = [1, 2, 3, 4, 5]
+
+const triple = x => x * 3 // try changing the 3 to 30
+
+console.log('data first: ', numbers.map(triple)) // numbers (data) is first
+
+console.log('data last: ', map(triple)(numbers)) // numbers (data) is last
+`))
+
 appendCodeRunner(document.getElementById('function-composition-example'), CodeRunnerJS(`
+const numbers = [1, 2, 3, 4, 5]
+
 const square = x => x ** 2
 
 const isOdd = x => x % 2 === 1
@@ -270,7 +282,7 @@ const squaredOdds = pipe([
   // reduce(add), // try uncommenting this line. What does this change?
 ])
 
-console.log('output:', squaredOdds([1, 2, 3, 4, 5]))
+console.log('output:', squaredOdds(numbers))
 `.trimStart()))
 
 /*

@@ -70,10 +70,22 @@ const trace = tap(console.log)
     </p>
   </section>
 
+  <section id="data-last">
+    <h2>Data Last</h2>
+    <p>
+      Data Last means <i>"set up all your functions before any data comes in"</i>. This is normally
+      inconvenient because most of the functions we'd like to set up live on the prototypes of the data,
+      e.g. <code>Array.prototype.map</code>. rubico takes these methods off of the prototype so you can put the data last.
+    </p>
+    <p>
+    </p>
+    <div id="data-last-example"></div>
+  </section>
+
   <section id="function-composition">
     <h2>Function Composition</h2>
     <p>
-      It's easy to compose functions with rubico; just <a href="https://github.rubico.land#pipe">pipe</a> them together.
+      Since data is last, it's easy to compose functions; just <a href="https://github.rubico.land#pipe">pipe</a> them together.
       If you need to act on a collection, e.g. an array, reach for <a href="https://github.rubico.land#map">map</a>,
       <a href="https://github.rubico.land#filter">filter</a>, or <a href="https://github.rubico.land#reduce">reduce</a>.
       In this example, we declare <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>.
