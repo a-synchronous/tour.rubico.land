@@ -92,7 +92,7 @@ const trace = tap(console.log)
     <h2>Data Last</h2>
     <p>
       Data Last means <i>"data is supplied to functions as the last step"</i>. This is desirable because it makes function composition a breeze.
-      However, it is inconvenient in practice because most of the functions you'd want to set up live on the prototypes of the data,
+      However, it is inconvenient in practice because most of the functions you'd want to set up reside on the prototypes of the data,
       e.g. <code>Array.prototype.map</code>. rubico takes these methods off of the prototype so you can put the data last.
     </p>
     <p>
