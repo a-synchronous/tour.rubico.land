@@ -48,6 +48,9 @@ const e = type => (...elements) => {
 }
 
 // it's not all about jsx
+const script = e('script')
+const html = e('html')
+const body = e('body')
 const span = e('span')
 const div = e('div')
 const h1 = e('h1')
@@ -154,20 +157,10 @@ const generateHTMLScript = code => {
 }
 
 // HTMLElement => HTMLDocument
-const renderIntoNewHTMLDoc = el => {
-  const html = document.createElement('html')
-  const body = document.createElement('body')
-  body.appendChild(el)
-  html.appendChild(body)
-  return html
-}
+const renderIntoNewHTMLDoc = el => html(body(el))
 
 // HTMLElement => html_string
-const htmlToString = el => {
-  const div = document.createElement('div')
-  div.appendChild(el)
-  return div.innerHTML
-}
+const htmlToString = el => div(el).innerHTML
 
 // code => iframeSrc
 const transformCodeToIFrameSrc = pipe([
@@ -255,7 +248,6 @@ const CodeRunner = mode => pipe([
       iframeSrc => {
         outputArea.src = iframeSrc
         if (!didRenderOutputArea) {
-          // codeRunner.appendChild(outputArea)
           runButton.appendChild(outputArea)
           didRenderOutputArea = true
         }
