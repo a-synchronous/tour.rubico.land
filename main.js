@@ -257,15 +257,26 @@ const appendCodeRunner = (parent, codeRunner) => {
   codeRunner.refresh() // must call this _after_ appending
 }
 
+appendCodeRunner(document.getElementById('a-synchrony-example'), CodeRunnerJS(`
+const todoIDs = [1, 2, 3, 4, 5] // try adding 6 to this array
+
+const getTodo = id => fetch('https://jsonplaceholder.typicode.com/todos/' + id)
+
+map(pipe([
+  getTodo,
+  res => res.json(),
+  trace,
+]))(todoIDs)
+`.trimStart()))
+
 appendCodeRunner(document.getElementById('data-last-example'), CodeRunnerJS(`
 const numbers = [1, 2, 3, 4, 5]
 
 const triple = x => x * 3
 
-console.log('data first: ', numbers.map(triple)) // numbers (data) is first
-
-console.log('data last: ', map(triple)(numbers)) // numbers (data) is last
-`))
+console.log('imperatively, data is first:', numbers.map(triple))
+console.log('with rubico, data is last: ', map(triple)(numbers))
+`.trimStart()))
 
 appendCodeRunner(document.getElementById('function-composition-example'), CodeRunnerJS(`
 const numbers = [1, 2, 3, 4, 5]
@@ -280,18 +291,12 @@ const squaredOdds = pipe([
   filter(isOdd),
   map(square),
   // trace,
-  // reduce(add), // try uncommenting this reduce statement. What happens here?
+  // reduce(add), // try uncommenting this reduce statement
 ])
 
-console.log('output:', squaredOdds(numbers))
+console.log('input:', numbers)
+
+const output = squaredOdds(numbers)
+
+console.log('output:', output)
 `.trimStart()))
-
-/*
-appendCodeRunner(document.getElementById('optional-asynchrony-example'), CodeRunnerJS(`
-const getDataAsync = () => fetch(
-  'https://jsonplaceholder.typicode.com/todos/1'
-).then(res => res.json())
-
-const getDataSync = () => ({ data })
-`)) // TODO: finish code example here
-*/

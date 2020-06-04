@@ -22,7 +22,7 @@
   <script src="https://unpkg.com/rubico@1/index.js" crossorigin></script>
   <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone@7.10/babel.min.js" crossorigin defer></script>
+  <script src="https://unpkg.com/@babel/standalone@7.10/babel.min.js" crossorigin></script>
   <script src="lib/codemirror.js"></script>
   <link rel="stylesheet" href="lib/codemirror.css">
   <link rel="stylesheet" href="theme/base16-dark.css">
@@ -37,10 +37,11 @@
     <img src="assets/welcome-stephen-colbert.gif" />
     <p>Glad you could make it. This tour covers</p>
     <ol>
+      <li><a href="#a-synchrony">[a]synchrony</a></li>
       <li><a href="#data-last">Data Last</a></li>
       <li><a href="#function-composition">Function Composition</a></li>
-      <li><a href="#optional-asynchrony">Optional Asynchrony</a></li>
       <li><a href="#data-composition">Data Composition</a></li>
+      <li><a href="#polymorphism">Polymorphism</a></li>
       <li><a href="#control-flow">Control Flow</a></li>
       <li><a href="#data-transformation">Data Transformation</a></li>
     </ol>
@@ -60,6 +61,7 @@ const {
   get, pick, omit,
 } = rubico
 
+// functional version of console.log
 // put this in a pipe
 const trace = tap(console.log)
   </pre>
@@ -70,12 +72,28 @@ const trace = tap(console.log)
     </p>
   </section>
 
+  <section id="a-synchrony">
+    <h2>[a]synchrony</h2>
+    <p>
+      You can pass rubico <i>synchronous or asynchronous</i> functions. When you pass asynchronous functions, rubico handles
+      the promise resolution for you. When you pass synchronous functions, rubico evaluates everything synchronously.
+      This means you can write code in functions without worrying about <code>.then</code> or <code>Promise.all</code>.
+    </p>
+    <p>
+      We can concisely make five requests to an API in parallel.
+    </p>
+    <div id="a-synchrony-example"></div>
+  </section>
+
   <section id="data-last">
     <h2>Data Last</h2>
     <p>
-      Data Last means <i>"set up all your functions before any data comes in"</i>. This is normally
-      inconvenient because most of the functions we'd like to set up live on the prototypes of the data,
+      Data Last means <i>"set up your functions in a way so that data is supplied at the last step"</i>.
+      Doing this is normally inconvenient because most of the functions we'd like to set up live on the prototypes of the data,
       e.g. <code>Array.prototype.map</code>. rubico takes these methods off of the prototype so you can put the data last.
+    </p>
+    <p>
+      You should see two identical arrays here.
     </p>
     <p>
     </p>
@@ -97,18 +115,12 @@ const trace = tap(console.log)
     <div id="function-composition-example"></div>
   </section>
 
-  <section id="optional-asynchrony">
-    <h2>Optional Asynchrony</h2>
-    <p>
-      You can pass rubico sync or async functions. When you pass async functions, rubico handles the promise resolution for you.
-      When you pass sync functions, rubico evaluates everything synchronously. Let's take a look with
-      <a href="https://github.rubico.land#map">map</a> and <a href="https://github.rubico.land#filter">filter</a>.
-    </p>
-    <div id="optional-asynchrony-example"></div>
-  </section>
-
   <section id="data-composition">
     <h2>Data Composition</h2>
+  </section>
+
+  <section id="polymorphism">
+    <h2>Polymorphism</h2>
   </section>
 
   <section id="control-flow">
