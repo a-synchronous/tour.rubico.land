@@ -1,0 +1,125 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const {
+  pipe, fork, assign, tap,
+  switchCase,
+  map,
+  and, not, gte,
+  get,
+} = require('rubico')
+const fs = require('fs').promises
+const nodePath = require('path')
+const execa = require('execa')
+
+const identity = x => x
+
+const trace = tap(console.log)
+
+const slice = (...args) => x => x.slice(...args)
+
+// process.argv => { bucketname, entrypoint }
+const parseArgs = pipe([
+  slice(2),
+  switchCase([
+    gte(get('length'), 2), identity,
+    () => {
+      throw new Error('at least two arguments required')
+    },
+  ]),
+  fork({
+    bucketname: get(0),
+    entrypoint: get(1),
+  }),
+])
+
+const ignoredExpressions = new Set([/.git/, /deploy/])
+
+// dirent => boolean
+const isIgnored = dirent => {
+  for (const re of ignoredExpressions) {
+    if (re.test(dirent.name)) return true
+  }
+  return false
+}
+
+// dirent => boolean
+const isDirectory = dirent => dirent.isDirectory()
+
+// entrypoint => filepaths
+const walk = entrypoint => pipe([
+  entrypoint => fs.readdir(entrypoint, { withFileTypes: true }),
+  map(switchCase([
+    isIgnored, () => [],
+    isDirectory, pipe([
+      get('name'),
+      filename => nodePath.resolve(entrypoint, filename),
+      walk,
+    ]),
+    pipe([
+      get('name'),
+      filename => nodePath.resolve(entrypoint, filename),
+    ]),
+  ])),
+])(entrypoint)
+
+const flattenAll = arr => arr.flat(Infinity)
+
+const extensionContentTypeMap = new Map([
+  ['.webmanifest', 'application/manifest+json'],
+  ['.json', 'application/json'],
+  ['.js', 'text/javascript'],
+  ['.html', 'text/html'],
+  ['.css', 'text/css'],
+  ['.gif', 'image/gif'],
+  ['.png', 'image/png'],
+  ['.ico', 'image/x-icon'],
+])
+
+// filepath => contentType
+const getContentType = pipe([
+  nodePath.parse,
+  get('ext'),
+  ext => extensionContentTypeMap.get(ext) || 'text/plain',
+])
+
+// (entrypoint, filepath) => bucket_key
+const toS3Key = (entrypoint, filepath) => (
+  filepath.replace(`${nodePath.resolve(entrypoint)}/`, '')
+)
+
+// https://stackoverflow.com/questions/29643455/how-do-i-set-content-type-when-uploading-to-s3-with-aws-cli
+const main = pipe([
+  parseArgs,
+  assign({
+    filepaths: pipe([
+      get('entrypoint'),
+      walk,
+      flattenAll,
+    ]),
+  }),
+  ({ entrypoint, bucketname, filepaths }) => map(pipe([
+    tap(filepath => console.log(
+      'uploading', filepath, '->',
+      `${bucketname}/${toS3Key(entrypoint, filepath)}`,
+    )),
+    filepath => [
+      's3api', 'put-object',
+      '--bucket', bucketname,
+      '--key', toS3Key(entrypoint, filepath),
+      '--body', filepath,
+      '--content-type', getContentType(filepath),
+      '--acl', 'public-read',
+    ],
+    args => execa('aws', args),
+  ]))(filepaths),
+  tap(() => console.log('done')),
+])
+
+if (process.argv.includes('-h') || process.argv.includes('--help')) {
+  console.log('usage: ./deploy <bucket> <entrypoint>')
+  process.exit(0)
+}
+
+main(process.argv)
