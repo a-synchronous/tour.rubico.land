@@ -335,9 +335,7 @@ const doMaths = pipe([
   */
 ])
 
-const result = doMaths(3)
-
-console.log('maths:', result)
+console.log('maths on 3:', doMaths(3))
 `.trimStart()))
 
 appendCodeRunner(document.getElementById('polymorphism-example'), CodeRunnerJS(`
@@ -353,40 +351,46 @@ const iterables = [
 const identity = x => x
 
 const square = x => {
-  // if (Array.isArray(x)) return [x[0] ** 2, x[1] ** 2] // this may fix the issue
+  // if (Array.isArray(x)) return map(square)(x) // uncommenting this may fix the issue
   return x ** 2
 }
 
-const squareAndCompare = map(fork({
-  original: identity,
-  squared: map(square),
-}))
-
-for (const obj of squareAndCompare(iterables)) {
-  console.log(obj.original, ' -> ', obj.squared)
-}
+map(pipe([
+  fork({
+    original: identity,
+    squared: map(square),
+  }),
+  ({ original, squared }) => {
+    console.log('squared:', original, '->', squared)
+  }
+]))(iterables)
 `.trimStart()))
 
 appendCodeRunner(document.getElementById('control-flow-example'), CodeRunnerJS(`
-const numbers = [1, 2, 3, 4, 5]
+const numbers = [1, 2, 3, 4, 5] // try adding 6.5
 
 const identity = x => x
 
+const isFloat = x => x % 1 !== 0
+
 const isOdd = x => x % 2 === 1
 
-const getNumberStats = map(pipe([
+map(pipe([
   fork({
     number: identity,
-    isEven: not(isOdd),
-    message: switchCase([
-      isOdd, () => 'I\\'m odd!',
-      () => 'I\\'m even.',
+    isEven: and([
+      not(isOdd),
+      not(isFloat),
     ]),
     // greaterThan3: gt(identity, 3),
+    message: switchCase([
+      isOdd, () => 'I\\'m odd!',
+      isFloat, () => 'I am neither odd nor even; I\\'m a float!',
+      () => 'I\\'m even.',
+    ]),
   }),
-]))
-
-for (const stats of getNumberStats(numbers)) {
-  console.log(stats)
-}
+  ({ number, ...stats }) => {
+    console.log('stats for ' + number + ':', stats)
+  },
+]))(numbers)
 `.trimStart()))

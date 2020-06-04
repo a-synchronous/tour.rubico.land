@@ -127,9 +127,12 @@ const trace = tap(console.log)
   <section id="polymorphism">
     <h2>Polymorphism</h2>
     <p>
-      rubico acts on more than just arrays. For example, in addition to arrays, you can reasonably expect to
+      With rubico, you can act on more than just arrays. For example, in addition to arrays, you can also
       <a href="https://github.rubico.land#map">map</a> over <i>asyncIterables</i>, <i>Strings</i>, <i>Sets</i>, <i>Maps</i>,
       <i>TypedArrays</i>, <i>Generated Iterables</i>, and <i>Objects</i>.
+    </p>
+    <p>
+      We square multiple collections of <b>1, 2, 3, 4, 5</b> below.
     </p>
     <div id="polymorphism-example"></div>
   </section>
@@ -137,10 +140,13 @@ const trace = tap(console.log)
   <section id="control-flow">
     <h2>Control Flow</h2>
     <p>
-      rubico handles control flow with <a href="https://github.rubico.land#switchCase">switchCase</a> and predicate composers
+      You can fully express logic statements with <a href="https://github.rubico.land#switchCase">switchCase</a> and predicate composers
       <a href="https://github.rubico.land#and">and</a>, <a href="https://github.rubico.land#or">or</a>, and <a href="https://github.rubico.land#or">not</a>.
-      You can fully express logic statements with those coupled with comparison functions like <a href="https://github.rubico.land#eq">eq</a> and
-      <a href="https://github.rubico.land#gt">gt</a>.
+      Coupled with comparison functions like <a href="https://github.rubico.land#eq">eq</a> and <a href="https://github.rubico.land#gt">gt</a>,
+      you would have complete control over the flow of your pipeline.
+    </p>
+    <p>
+      We can use rubico control expressions to functionally create stats for numbers.
     </p>
     <div id="control-flow-example"></div>
   </section>
