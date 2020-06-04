@@ -40,7 +40,7 @@
       <li><a href="#a-synchrony">[a]synchrony</a></li>
       <li><a href="#data-last">Data Last</a></li>
       <li><a href="#function-composition">Function Composition</a></li>
-      <li><a href="#data-composition">Data Composition</a></li>
+      <li><a href="#shape-control">Shape Control</a></li>
       <li><a href="#polymorphism">Polymorphism</a></li>
       <li><a href="#control-flow">Control Flow</a></li>
       <li><a href="#data-transformation">Data Transformation</a></li>
@@ -118,8 +118,18 @@ const trace = tap(console.log)
     <div id="function-composition-example"></div>
   </section>
 
-  <section id="data-composition">
-    <h2>Data Composition</h2>
+  <section id="shape-control">
+    <h2>Shape Control</h2>
+    <p>
+      There will be times when you'll want to control the shape of your data. For times like these, use
+      <a href="https://github.rubico.land#fork">fork</a> or <a href="https://github.rubico.land#assign">assign</a>.
+      The aforementioned functions compose well with <a href="https://github.rubico.land#get">get</a>; use it
+      in conjunction to manipulate payloads freely. Also, you can supply async functions here; they're run in parallel.
+    </p>
+    <p>
+      Here you can expect the object <b>{ original: 3, resultOfDouble: 6, resultOfSquare: 9 }</b> from <code>doingMaths</code> on <b>3</b>.
+    </p>
+    <div id="shape-control-example"></div>
   </section>
 
   <section id="polymorphism">

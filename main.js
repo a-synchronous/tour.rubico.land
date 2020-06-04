@@ -301,3 +301,36 @@ const output = squaredOdds(numbers)
 
 console.log('output:', output)
 `.trimStart()))
+
+appendCodeRunner(document.getElementById('shape-control-example'), CodeRunnerJS(`
+const identity = x => x
+
+const square = x => x ** 2
+
+const double = x => x * 2
+
+const add = (a, b) => a + b
+
+const doMaths = pipe([
+  fork({
+    original: identity,
+    resultOfDouble: double,
+    resultOfSquare: square,
+  }),
+  /* try uncommenting this block
+  assign({
+    resultOfDoublePlusSquare: pipe([
+      fork([
+        get('resultOfDouble'),
+        get('resultOfSquare'),
+      ]),
+      reduce(add),
+    ]),
+  }),
+  */
+])
+
+const result = doMaths(3)
+
+console.log('maths:', result)
+`.trimStart()))
