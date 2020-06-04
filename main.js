@@ -357,15 +357,14 @@ const square = x => {
   return x ** 2
 }
 
-const squareAndCompare = map(pipe([
-  fork({
-    original: identity,
-    squared: map(square),
-  }),
-  trace,
-]))
+const squareAndCompare = map(fork({
+  original: identity,
+  squared: map(square),
+}))
 
-squareAndCompare(iterables)
+for (const obj of squareAndCompare(iterables)) {
+  console.log(obj.original, ' -> ', obj.squared)
+}
 `.trimStart()))
 
 appendCodeRunner(document.getElementById('control-flow-example'), CodeRunnerJS(`
@@ -375,7 +374,7 @@ const identity = x => x
 
 const isOdd = x => x % 2 === 1
 
-map(pipe([
+const getNumberStats = map(pipe([
   fork({
     number: identity,
     isEven: not(isOdd),
@@ -385,6 +384,9 @@ map(pipe([
     ]),
     // greaterThan3: gt(identity, 3),
   }),
-  trace,
-]))(numbers)
+]))
+
+for (const stats of getNumberStats(numbers)) {
+  console.log(stats)
+}
 `.trimStart()))
