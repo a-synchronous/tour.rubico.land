@@ -111,10 +111,10 @@ const trace = tap(console.log)
   </section>
 
   <section id="shaping-data">
-    <h2>Shaping data</h2>
+    <h2>Shaping Data</h2>
     <p>
-      There will be times when you'll want to control the shape of your data. For example, you may want to access a property of
-      an object in your pipeline, or create a step whereby you construct a new object entirely. For times like these, use
+      There will be times when you'll want to control the shape of your data. For example, you may want to extend an object in
+      your pipeline with new properties, or create a step whereby you construct a new object from an existing one. For times like these, use
       <a href="https://github.rubico.land#get">get</a> in conjunction with <a href="https://github.rubico.land#fork">fork</a>
       or <a href="https://github.rubico.land#assign">assign</a>.
     </p>
@@ -127,7 +127,7 @@ const trace = tap(console.log)
   <section id="polymorphism">
     <h2>Polymorphism</h2>
     <p>
-      rubico acts on more collections than just arrays. For example, in addition to arrays, you can reasonably expect to
+      rubico acts on more than just arrays. For example, in addition to arrays, you can reasonably expect to
       <a href="https://github.rubico.land#map">map</a> over <i>asyncIterables</i>, <i>Strings</i>, <i>Sets</i>, <i>Maps</i>,
       <i>TypedArrays</i>, <i>Generated Iterables</i>, and <i>Objects</i>.
     </p>
@@ -136,6 +136,13 @@ const trace = tap(console.log)
 
   <section id="control-flow">
     <h2>Control Flow</h2>
+    <p>
+      rubico expresses control flow with <a href="https://github.rubico.land#switchCase">switchCase</a> and predicate composers
+      <a href="https://github.rubico.land#and">and</a>, <a href="https://github.rubico.land#or">or</a>, and <a href="https://github.rubico.land#or">not</a>.
+      You can fully express control flow with those coupled with comparison functions like <a href="https://github.rubico.land#eq">eq</a> and
+      <a href="https://github.rubico.land#gt">gt</a>.
+    </p>
+    <div id="control-flow-example"></div>
   </section>
 
   <section id="transforming-data">

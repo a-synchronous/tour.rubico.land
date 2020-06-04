@@ -315,8 +315,6 @@ const square = x => x ** 2
 
 const double = x => x * 2
 
-const add = (a, b) => a + b
-
 const doMaths = pipe([
   fork({
     original: identity,
@@ -324,14 +322,14 @@ const doMaths = pipe([
     resultOfSquare: square,
   }),
   /* try uncommenting this block
-  assign({ // use assign if you want to extend the existing payload
+  assign({
     total: pipe([
-      fork([ // with fork, you can also shape an array
+      fork([
         get('original'),
         get('resultOfDouble'),
         get('resultOfSquare'),
       ]),
-      reduce(add),
+      ([original, resultOfDouble, resultOfSquare]) => original + resultOfDouble + resultOfSquare,
     ]),
   }),
   */
@@ -349,12 +347,42 @@ const iterables = [
   new Set([1, 2, 3, 4, 5]),
   new Uint8Array([1, 2, 3, 4, 5]),
   { a: 1, b: 2, c: 3, d: 4, e: 5 },
+  // new Map([[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]), // try uncommenting this. Why does this break?
 ]
 
-const square = x => Number(x) ** 2
+const identity = x => x
+
+const square = x => {
+  // if (Array.isArray(x)) return [x[0] ** 2, x[1] ** 2] // this may fix the issue
+  return x ** 2
+}
 
 map(pipe([
-  map(square),
+  fork({
+    original: identity,
+    squared: map(square),
+  }),
   trace,
 ]))(iterables)
+`.trimStart()))
+
+appendCodeRunner(document.getElementById('control-flow-example'), CodeRunnerJS(`
+const numbers = [1, 2, 3, 4, 5]
+
+const identity = x => x
+
+const isOdd = x => x % 2 === 1
+
+map(pipe([
+  fork({
+    number: identity,
+    isEven: not(isOdd),
+    message: switchCase([
+      isOdd, () => 'I\\'m odd!',
+      () => 'I\\'m even.',
+    ]),
+    // greaterThan3: gt(identity, 3),
+  }),
+  trace,
+]))(numbers)
 `.trimStart()))
