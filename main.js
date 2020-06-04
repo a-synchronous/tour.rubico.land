@@ -85,12 +85,27 @@ Promise.all([
 
   const is = fn => x => isDefined(x) && x.constructor === fn
 
+  const typedArrays = new Set([
+    'Uint8ClampedArray',
+    'Uint8Array', 'Int8Array',
+    'Uint16Array', 'Int16Array',
+    'Uint32Array', 'Int32Array',
+    'Float32Array', 'Float64Array',
+    'BigUint64Array', 'BigInt64Array',
+  ])
+
+  const isTypedArray = x => (isDefined(x) &&
+    x.constructor && typedArrays.has(x.constructor.name))
+
   const fmt = (x, depth = 0) => {
     if (depth > 0 && isString(x)) {
       return "'" + x + "'"
     }
     if (isArray(x)) {
       return '[' + map(xi => fmt(xi, depth + 1))(x).join(', ') + ']'
+    }
+    if (isTypedArray(x)) {
+      return x.constructor.name + '(' + x.length + ') [' + x.join(', ') + ']'
     }
     if (is(Object)(x)) {
       let y = '{ '
@@ -325,4 +340,21 @@ const doMaths = pipe([
 const result = doMaths(3)
 
 console.log('maths:', result)
+`.trimStart()))
+
+appendCodeRunner(document.getElementById('polymorphism-example'), CodeRunnerJS(`
+const iterables = [
+  [1, 2, 3, 4, 5],
+  '12345',
+  new Set([1, 2, 3, 4, 5]),
+  new Uint8Array([1, 2, 3, 4, 5]),
+  { a: 1, b: 2, c: 3, d: 4, e: 5 },
+]
+
+const square = x => Number(x) ** 2
+
+map(pipe([
+  map(square),
+  trace,
+]))(iterables)
 `.trimStart()))
