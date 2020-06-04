@@ -42,8 +42,7 @@
     <p>Glad you could make it. The rubico tour covers</p>
     <ol>
       <li><a href="#a-synchrony">[a]synchrony</a></li>
-      <li><a href="#data-last">Data Last</a></li>
-      <li><a href="#function-composition">Function Composition</a></li>
+      <li><a href="#pipelines">Pipelines</a></li>
       <li><a href="#shape-control">Shape Control</a></li>
       <li><a href="#polymorphism">Polymorphism</a></li>
       <li><a href="#control-flow">Control Flow</a></li>
@@ -92,43 +91,30 @@ const trace = tap(console.log)
     <div id="a-synchrony-example"></div>
   </section>
 
-  <section id="data-last">
-    <h2>Data Last</h2>
+  <section id="pipelines">
+    <h2>Pipelines</h2>
     <p>
-      Data Last means <i>"data is supplied to functions as the last step"</i>. rubico's <a href="https://github.rubico.land#pipe">pipe</a>
-      is a JavaScript analog to unix pipelines, where
-      <a href="https://en.wikipedia.org/wiki/Tacit_programming#Unix_pipeline">arguments are not mentioned</a>. Pipelines of this nature are
-      inconvenient in practice because most of the functions you'd want to pipe reside on the prototypes of the data,
-      e.g. <code>Array.prototype.map</code>. rubico takes these methods off of the prototype so you can put the data last.
+      rubico's <a href="https://github.rubico.land#pipe">pipe</a> is a happy marriage between the expressiveness of JavaScript
+      and the Unix philosophy. You can think about rubico's pipe as an analog to the Unix pipe; instead of command line utilities,
+      you're piping functions. Without rubico, pipelines of this nature are inconvenient because most of the functions you'd want to pipe
+      reside on the prototypes of the data, e.g. <code>Array.prototype.map</code>. rubico inverts these prototype methods
+      so you can create pipelines with ease, for example, with <a href="https://github.rubico.land#map">map</a>.
     </p>
     <p>
-      You should see two identical arrays here.
+      If we pipe the input array <b>[1, 2, 3, 4, 5]</b> through the pipeline <code>squaredOdds</code>, we expect the output array <b>[1, 9, 25]</b>
     </p>
     <p>
     </p>
-    <div id="data-last-example"></div>
-  </section>
-
-  <section id="function-composition">
-    <h2>Function Composition</h2>
-    <p>
-      Since data is last, it's easy to compose functions; just <a href="https://github.rubico.land#pipe">pipe</a> them together.
-      If you need to act on a collection, e.g. an array, use <a href="https://github.rubico.land#map">map</a>,
-      <a href="https://github.rubico.land#filter">filter</a>, or <a href="https://github.rubico.land#reduce">reduce</a>.
-      In the example below, we compose <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>.
-    </p>
-    <p>
-      Via <code>squaredOdds</code>, we expect the input array <b>[1, 2, 3, 4, 5]</b> to transform into the output array <b>[1, 9, 25]</b>.
-    </p>
-    <div id="function-composition-example"></div>
+    <div id="pipelines-example"></div>
   </section>
 
   <section id="shape-control">
     <h2>Shape Control</h2>
     <p>
-      There will be times when you'll want to control the shape of your data. For times like these, use
-      <a href="https://github.rubico.land#fork">fork</a> or <a href="https://github.rubico.land#assign">assign</a>.
-      Use <a href="https://github.rubico.land#get">get</a> in conjunction with these to manipulate payloads freely.
+      There will be times when you'll want to control the shape of your data. For example, you may want to access a property of
+      an object in your pipeline, or create a step whereby you construct a new object entirely. For times like these, use
+      <a href="https://github.rubico.land#get">get</a> in conjunction with <a href="https://github.rubico.land#fork">fork</a>
+      or <a href="https://github.rubico.land#assign">assign</a>.
     </p>
     <p>
       Here you can expect the object <b>{ original: 3, resultOfDouble: 6, resultOfSquare: 9 }</b> from <code>doingMaths</code> on <b>3</b>.

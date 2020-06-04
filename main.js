@@ -270,16 +270,7 @@ map(pipe([
 ]))(todoIDs)
 `.trimStart()))
 
-appendCodeRunner(document.getElementById('data-last-example'), CodeRunnerJS(`
-const numbers = [1, 2, 3, 4, 5]
-
-const triple = x => x * 3
-
-console.log('imperatively, data is first:', numbers.map(triple))
-console.log('with rubico, data is last: ', map(triple)(numbers))
-`.trimStart()))
-
-appendCodeRunner(document.getElementById('function-composition-example'), CodeRunnerJS(`
+appendCodeRunner(document.getElementById('pipelines-example'), CodeRunnerJS(`
 const numbers = [1, 2, 3, 4, 5]
 
 const square = x => x ** 2
