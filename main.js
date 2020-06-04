@@ -183,6 +183,7 @@ const RunButton = () => {
   const y = div(displayButton)
   y.style.display = 'grid'
   y.style.gridTemplateColumns = '3em 1em auto'
+  y.style.height = '10em'
   y.setOnClick = fn => {
     displayButton.onclick = () => {
       if (y.childElementCount < 2) {

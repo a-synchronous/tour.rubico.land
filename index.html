@@ -72,12 +72,15 @@ const trace = tap(console.log)
     </p>
   </section>
 
+  <br>
+  <br>
+  <br>
+
   <section id="a-synchrony">
     <h2>[a]synchrony</h2>
     <p>
-      You can pass rubico <i>synchronous or asynchronous</i> functions. When you pass asynchronous functions, rubico handles
-      the promise resolution for you. When you pass synchronous functions, rubico evaluates everything synchronously.
-      This means you can write code in functions without worrying about <code>.then</code> or <code>Promise.all</code>.
+      You can pass rubico <i>synchronous or asynchronous</i> functions. When any functions are asynchronous, rubico handles
+      the promise resolution for you. That means you can stop worrying about explicitly calling <code>.then</code> or <code>Promise.all</code>.
     </p>
     <p>
       We can concisely make five requests to an API in parallel.
@@ -88,8 +91,8 @@ const trace = tap(console.log)
   <section id="data-last">
     <h2>Data Last</h2>
     <p>
-      Data Last means <i>"set up your functions in a way so that data is supplied at the last step"</i>.
-      Doing this is normally inconvenient because most of the functions we'd like to set up live on the prototypes of the data,
+      Data Last means <i>"data is supplied to functions as the last step"</i>. This is desirable because it makes function composition a breeze.
+      However, it is inconvenient in practice because most of the functions you'd want to set up live on the prototypes of the data,
       e.g. <code>Array.prototype.map</code>. rubico takes these methods off of the prototype so you can put the data last.
     </p>
     <p>
