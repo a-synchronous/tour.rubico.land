@@ -357,13 +357,15 @@ const square = x => {
   return x ** 2
 }
 
-map(pipe([
+const squareAndCompare = map(pipe([
   fork({
     original: identity,
     squared: map(square),
   }),
   trace,
-]))(iterables)
+]))
+
+squareAndCompare(iterables)
 `.trimStart()))
 
 appendCodeRunner(document.getElementById('control-flow-example'), CodeRunnerJS(`
