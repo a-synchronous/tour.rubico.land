@@ -35,7 +35,11 @@
   <section>
     <h1>You've arrived at the rubico tour!</h1>
     <img src="assets/welcome-stephen-colbert.gif" />
-    <p>Glad you could make it. This tour covers</p>
+    <p style="font-size: 0.75em">
+      If you are wondering why you're here, please see the
+      <a href="https://github.rubico.land#motivation" style="font-size: 1em">motivation</a>
+    </p>
+    <p>Glad you could make it. The rubico tour covers</p>
     <ol>
       <li><a href="#a-synchrony">[a]synchrony</a></li>
       <li><a href="#data-last">Data Last</a></li>
@@ -47,7 +51,7 @@
     </ol>
     <p>
       You can expect each of the above sections to contain an <b>editable</b> and <b>runnable</b> code example.<br>
-      <span style="font-size: .90em">(You'll get a lot more out of this page by playing with the examples)</span>
+      You'll get a lot more out of this page if you play with the examples.
     </p>
     <div style="margin-left: 5px">
       <code style="color: grey;">
@@ -91,8 +95,10 @@ const trace = tap(console.log)
   <section id="data-last">
     <h2>Data Last</h2>
     <p>
-      Data Last means <i>"data is supplied to functions as the last step"</i>. This is desirable because it makes function composition a breeze.
-      However, it is inconvenient in practice because most of the functions you'd want to set up reside on the prototypes of the data,
+      Data Last means <i>"data is supplied to functions as the last step"</i>. rubico's <a href="https://github.rubico.land#pipe">pipe</a>
+      is a JavaScript analog to unix pipelines, where
+      <a href="https://en.wikipedia.org/wiki/Tacit_programming#Unix_pipeline">arguments are not mentioned</a>. Pipelines of this nature are
+      inconvenient in practice because most of the functions you'd want to pipe reside on the prototypes of the data,
       e.g. <code>Array.prototype.map</code>. rubico takes these methods off of the prototype so you can put the data last.
     </p>
     <p>
@@ -109,11 +115,10 @@ const trace = tap(console.log)
       Since data is last, it's easy to compose functions; just <a href="https://github.rubico.land#pipe">pipe</a> them together.
       If you need to act on a collection, e.g. an array, use <a href="https://github.rubico.land#map">map</a>,
       <a href="https://github.rubico.land#filter">filter</a>, or <a href="https://github.rubico.land#reduce">reduce</a>.
-      In this example, we compose <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>.
+      In the example below, we compose <code>squaredOdds</code> from <code>square</code> and <code>isOdd</code>.
     </p>
     <p>
-      By running the example as is, we expect the input array <b>[1, 2, 3, 4, 5]</b> to transform into
-      the output array <b>[1, 9, 25]</b>.
+      Via <code>squaredOdds</code>, we expect the input array <b>[1, 2, 3, 4, 5]</b> to transform into the output array <b>[1, 9, 25]</b>.
     </p>
     <div id="function-composition-example"></div>
   </section>
