@@ -394,3 +394,61 @@ map(pipe([
   },
 ]))(numbers)
 `.trimStart()))
+
+appendCodeRunner(document.getElementById('transformation-example-1'), CodeRunnerJS(`
+const numbers = [1, 2, 3, 4, 5]
+
+const square = x => x ** 2
+
+const isOdd = x => x % 2 === 1
+
+const add = (a, b) => a + b
+
+const squaredOdds = pipe([
+  // tap(n => console.log('enter', n)),
+  filter(isOdd),
+  // tap(n => console.log('filtered', n)),
+  map(square),
+  // tap(n => console.log('squared', n)),
+])
+
+console.log('transformed array:', transform(squaredOdds, [])(numbers))
+console.log('transformed string:', transform(squaredOdds, '')(numbers))
+console.log('transformed set:', transform(squaredOdds, new Set())(numbers))
+console.log('reduced sum:', reduce(squaredOdds(add), 0)(numbers))
+`.trimStart()))
+
+appendCodeRunner(document.getElementById('transformation-example-2'), CodeRunnerJS(`
+const todoIDs = [1, 2, 3]
+
+const identity = x => x
+
+const getTodo = id => fetch('https://jsonplaceholder.typicode.com/todos/' + id)
+
+const pipeline = map(pipe([
+  getTodo,
+  res => res.json(),
+  /* uncomment this to count the number of characters in each title
+  assign({
+    title: fork({
+      text: get('title'),
+      numChars: get('title.length'),
+    }),
+  }),
+  */
+]))
+
+const addTodoToUserIDTodoMap = (userIDTodoMap, todo) => {
+  if (userIDTodoMap.has(todo.userId)) {
+    userIDTodoMap.get(todo.userId).push(todo.title)
+  } else {
+    userIDTodoMap.set(todo.userId, [todo.title])
+  }
+  return userIDTodoMap
+}
+
+pipe([
+  reduce(pipeline(addTodoToUserIDTodoMap), new Map()),
+  trace,
+])(todoIDs)
+`.trimStart()))
