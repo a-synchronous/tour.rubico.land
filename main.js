@@ -293,7 +293,7 @@ const output = squaredOdds(numbers)
 console.log('output:', output)
 `.trimStart()))
 
-appendCodeRunner(document.getElementById('shape-control-example'), CodeRunnerJS(`
+appendCodeRunner(document.getElementById('shaping-data-example'), CodeRunnerJS(`
 const identity = x => x
 
 const square = x => x ** 2
@@ -309,9 +309,9 @@ const doMaths = pipe([
     resultOfSquare: square,
   }),
   /* try uncommenting this block
-  assign({
+  assign({ // use assign if you want to extend the existing payload
     total: pipe([
-      fork([
+      fork([ // with fork, you can also shape an array
         get('original'),
         get('resultOfDouble'),
         get('resultOfSquare'),
