@@ -319,8 +319,9 @@ const doMaths = pipe([
   }),
   /* try uncommenting this block
   assign({
-    resultOfDoublePlusSquare: pipe([
+    total: pipe([
       fork([
+        get('original'),
         get('resultOfDouble'),
         get('resultOfSquare'),
       ]),
