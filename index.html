@@ -35,11 +35,13 @@
   <section>
     <h1>You've arrived at the rubico tour!</h1>
     <img src="assets/welcome-stephen-colbert.gif" />
-    <p style="font-size: 0.75em">
-      If you are wondering why you're here, please see the
-      <a href="https://github.rubico.land#motivation" style="font-size: 1em">motivation</a>
+    <p>
+      Glad you could make it. If you are wondering what this page is for, please see the
+      <a href="https://github.rubico.land#motivation" style="font-size: 1em">motivation</a>.
     </p>
-    <p>Glad you could make it. The rubico tour covers</p>
+    <p>
+      The rubico tour will cover:
+    </p>
     <ol>
       <li><a href="#a-synchrony">[a]synchrony</a></li>
       <li><a href="#pipelines">Pipelines</a></li>
@@ -94,7 +96,7 @@ const trace = tap(console.log)
   <section id="pipelines">
     <h2>Pipelines</h2>
     <p>
-      rubico's <a href="https://github.rubico.land#pipe">pipe</a> is the happy marriage between the expressiveness of a modern language
+      rubico's <a href="https://github.rubico.land#pipe">pipe</a> is the happy marriage between the expressiveness of a modern programming language
       and the Unix philosophy. You can think about rubico's pipe as an analog to the Unix pipe; instead of command line utilities,
       you're piping functions. Without rubico, pipelines of this nature are inconvenient because most of the functions you'd want to pipe
       reside on the prototypes of the data, e.g. <code>Array.prototype.map</code>. rubico inverts these prototype methods
