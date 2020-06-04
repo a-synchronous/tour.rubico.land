@@ -308,7 +308,7 @@ const output = squaredOdds(numbers)
 console.log('output:', output)
 `.trimStart()))
 
-appendCodeRunner(document.getElementById('shaping-data-example'), CodeRunnerJS(`
+appendCodeRunner(document.getElementById('data-shape-example'), CodeRunnerJS(`
 const identity = x => x
 
 const square = x => x ** 2

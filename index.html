@@ -45,7 +45,7 @@
     <ol>
       <li><a href="#a-synchrony">[a]synchrony</a></li>
       <li><a href="#pipelines">Pipelines</a></li>
-      <li><a href="#shaping-data">Shaping Data</a></li>
+      <li><a href="#data-shape">Data Shape</a></li>
       <li><a href="#polymorphism">Polymorphism</a></li>
       <li><a href="#control-flow">Control Flow</a></li>
       <li><a href="#transformation">Transformation</a></li>
@@ -110,8 +110,8 @@ const trace = tap(console.log)
     <div id="pipelines-example"></div>
   </section>
 
-  <section id="shaping-data">
-    <h2>Shaping Data</h2>
+  <section id="data-shape">
+    <h2>Data Shape</h2>
     <p>
       There will be times when you'll want to control the shape of your data. For example, you may want to extend an object in
       your pipeline with new properties, or create a step whereby you construct a new object from an existing one. For times like these, use
@@ -121,7 +121,7 @@ const trace = tap(console.log)
     <p>
       Here you can expect the object <b>{ original: 3, resultOfDouble: 6, resultOfSquare: 9 }</b> from <code>doingMaths</code> on <b>3</b>.
     </p>
-    <div id="shaping-data-example"></div>
+    <div id="data-shape-example"></div>
   </section>
 
   <section id="polymorphism">
