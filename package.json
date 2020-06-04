@@ -1,0 +1,10 @@
+{
+  "name": "tour.rubico.land",
+  "version": "0.0.1",
+  "author": "Richard Tong",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "github:a-synchronous/tour.rubico.land"
+  }
+}
