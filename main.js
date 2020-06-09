@@ -62,6 +62,7 @@ const iframe = e('iframe')
 const templateCodeSandbox = code => `
 Promise.all([
   fetch('https://unpkg.com/rubico@1/index.js').then(res => res.text()),
+  fetch('https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.15/howler.core.min.js').then(res => res.text()),
 ]).then(texts => {
   texts.forEach(text => { Function(text)() })
 
@@ -411,36 +412,26 @@ console.log('reduced sum:', reduce(squaredOdds(add), 0)(numbers))
 `.trimStart()))
 
 appendCodeRunner(document.getElementById('transformation-example-2'), CodeRunnerJS(`
-const todoIDs = [1, 2, 3]
-
-const identity = x => x
-
-const getTodo = id => fetch('https://jsonplaceholder.typicode.com/todos/' + id)
-
-const pipeline = map(pipe([
-  getTodo,
-  res => res.json(),
-  /* uncomment this to count the number of characters in each title
-  assign({
-    title: fork({
-      text: get('title'),
-      numChars: get('title.length'),
-    }),
-  }),
-  */
-]))
-
-const addTodoToUserIDTodoMap = (userIDTodoMap, todo) => {
-  if (userIDTodoMap.has(todo.userId)) {
-    userIDTodoMap.get(todo.userId).push(todo.title)
-  } else {
-    userIDTodoMap.set(todo.userId, [todo.title])
+const generateSegmentsOfLength = n => function*(s) {
+  for (let i = 0; i < s.length; i += n) {
+    yield s.slice(i, i + n)
   }
-  return userIDTodoMap
 }
 
+const toBinaryString = x => x.toString(2)
+
+const toBinaryInt = x => parseInt(x, 2)
+
+const alphabetSongDecimal = '16791573288892525934609440079317541905554393653557736896280802239551592289061061348368963'
+
 pipe([
-  reduce(pipeline(addTodoToUserIDTodoMap), new Map()),
+  BigInt,
+  toBinaryString,
+  generateSegmentsOfLength(7),
+  transform(map(pipe([
+    toBinaryInt,
+    String.fromCharCode,
+  ])), ''), // try changing this to [] or new Set()
   trace,
-])(todoIDs)
+])(alphabetSongDecimal)
 `.trimStart()))
