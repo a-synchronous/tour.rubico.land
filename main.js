@@ -165,8 +165,8 @@ const htmlToString = el => div(el).innerHTML
 
 // code => iframeSrc
 const transformCodeToIFrameSrc = pipe([
-  code => Babel.transform(code, {}),
-  get('code'),
+  // code => Babel.transform(code, {}),
+  // get('code'),
   generateHTMLScript,
   renderIntoNewHTMLDoc,
   htmlToString,
