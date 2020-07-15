@@ -61,15 +61,13 @@ const iframe = e('iframe')
 
 const templateCodeSandbox = code => `
 Promise.all([
-  fetch('https://unpkg.com/rubico@1/index.js').then(res => res.text()),
-  fetch('https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.15/howler.core.min.js').then(res => res.text()),
-]).then(texts => {
-  texts.forEach(text => { Function(text)() })
+  import('https://unpkg.com/rubico@1/index.js'),
+]).then(() => {
 
   const {
     pipe, fork, assign,
     tap, tryCatch, switchCase,
-    map, filter, reduce, transform,
+    map, filter, reduce, transform, flatMap,
     any, all, and, or, not,
     eq, gt, lt, gte, lte,
     get, pick, omit,
