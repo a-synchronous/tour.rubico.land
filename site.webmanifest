@@ -1,10 +1,10 @@
 {
-  "name": "tour.rubico",
-  "short_name": "tour.rubico",
+  "name": "rubico tour",
+  "short_name": "rubico tour",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "A brief introduction to rubico",
+  "description": "a tour of rubico",
   "icons": [{
     "src": "assets/favicon-16x16.png",
     "sizes": "16x16",
