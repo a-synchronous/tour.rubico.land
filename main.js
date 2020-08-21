@@ -60,10 +60,7 @@ const button = e('button')
 const iframe = e('iframe')
 
 const templateCodeSandbox = code => `
-Promise.all([
-  import('https://unpkg.com/rubico@1/index.js'),
-]).then(() => {
-
+import('https://unpkg.com/rubico').then(function () {
   const {
     pipe, fork, assign,
     tap, tryCatch, switchCase,
@@ -145,7 +142,7 @@ Promise.all([
   } catch (e) {
     console.log(e)
   }
-})
+}, console.error)
 `.trim()
 
 // code => html_string_with_code
